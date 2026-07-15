@@ -145,6 +145,11 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#faf7f2;color:#0e1642
 .corr-bar-wrap{width:100%;height:4px;background:rgba(0,0,0,.06);border-radius:2px;overflow:hidden;}
 .corr-bar-fill{height:100%;border-radius:2px;}
 .corr-val{font-size:9.5px;font-weight:800;min-width:43px;text-align:center;padding:3px 5px;border-radius:999px;background:#fff;}
+.corr-toolbar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;}
+.corr-sort{display:flex;align-items:center;gap:3px;padding:3px;border-radius:9px;background:rgba(0,0,0,.045);}
+.corr-sort button{border:0;background:transparent;border-radius:7px;padding:6px 8px;font:700 9.5px 'Plus Jakarta Sans',sans-serif;color:rgba(14,22,66,.38);cursor:pointer;transition:.18s;}
+.corr-sort button.on{background:#fff;color:#1a2bc9;box-shadow:0 1px 5px rgba(0,0,0,.08);}
+@media(max-width:680px){.corr-toolbar{align-items:stretch;flex-direction:column}}
 /* AI */
 .ai-box{background:linear-gradient(135deg,rgba(26,43,201,.05),rgba(26,43,201,.02));border:1px solid rgba(26,43,201,.12);border-radius:14px;padding:14px;}
 .ai-label{font-size:9.5px;font-weight:700;color:#1a2bc9;letter-spacing:.4px;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:5px;}
@@ -624,7 +629,7 @@ function fmtPct(p){return p.toFixed(1)+'%';}
 //  STATE
 // ══════════════════════════════
 let sCargo='governador',selCands=[],focusWord=null,topN=8,searchQ='',searchTerms=[];
-let chartType='bump',cfgOpen=false,dpTab='candidatos';
+let chartType='bump',cfgOpen=false,dpTab='candidatos',corrSortMode='frequencia';
 let metricMode='publicacoes',periodMode='7d',sourceMode='proprias',animationEnabled=true;
 let raceAnim=null,mainAnim=null,bumpDanceAnim=null,bumpPrevState=null,lineMoveAnim=null,linePrevState=null;
 
@@ -798,7 +803,7 @@ function closeDetail(){
   document.getElementById('detailPanel').classList.remove('open');
   document.getElementById('dpClose').style.display='none';
 }
-function switchDpTab(tab){dpTab=tab;renderDetailPanel(focusWord);}
+function switchDpTab(tab){if(tab==='correlacao'&&dpTab!=='correlacao')corrSortMode='frequencia';dpTab=tab;renderDetailPanel(focusWord);}
 
 function renderDetailPanel(word){
   const inner=document.getElementById('dpInner');
@@ -868,30 +873,61 @@ function renderDpTab(word,active,col,corrs){
     requestAnimationFrame(()=>startRaceAnimation(word,active));
 
   } else if(dpTab==='correlacao'){
-    // correlation ranking
-    const publicationVol=word=>Math.round(getVol(word,WEEKS.length-1)/(METRIC_FACTORS[metricMode]||1));
-    const top=corrs.slice().sort((a,b)=>publicationVol(b.word)-publicationVol(a.word)).slice(0,8);
-    const maxVol=Math.max(...top.map(c=>publicationVol(c.word)),1);
     tc.innerHTML=`
-      <p style="font-size:10px;color:rgba(0,0,0,.35);margin-bottom:10px;">Micro-ranking das palavras mais correlacionadas com "${word}", com ${METRIC_LABELS[metricMode].toLowerCase()} no período selecionado.</p>
-      <div class="corr-list">${top.map((c,i)=>{
-        const isPos=c.r>=0;
-        const cc=wColor(c.word);
-        const vol=publicationVol(c.word);
-        const barW=Math.round(vol/maxVol*100);
-        return`<div class="corr-row">
-          <div class="corr-rank-badge" style="background:${cc}">${i+1}</div>
-          <div class="corr-info">
-            <div class="corr-word-line"><span class="corr-word">${c.word}</span><span class="corr-volume">${fmt(vol)} publicações</span></div>
-            <div class="corr-bar-wrap"><div class="corr-bar-fill" style="width:${barW}%;background:${cc}"></div></div>
-          </div>
-          <span class="corr-val" style="color:${isPos?'#059669':'#dc2626'}">r ${isPos?'+':''}${c.r.toFixed(2)}</span>
-        </div>`;}).join('')}</div>
+      <p style="font-size:10px;color:rgba(0,0,0,.35);margin-bottom:10px;">A barra mostra sempre a frequência e o indicador <strong>r</strong> mostra sempre o Fator R. Escolha qual dessas métricas define a ordem do ranking.</p>
+      <div class="corr-toolbar">
+        <div class="corr-sort" role="group" aria-label="Ordenar correlações">
+          <button id="corrSortFrequency" class="${corrSortMode==='frequencia'?'on':''}" onclick="setCorrelationSort('frequencia','${word}')">Frequência</button>
+          <button id="corrSortR" class="${corrSortMode==='fator-r'?'on':''}" onclick="setCorrelationSort('fator-r','${word}')">Fator R</button>
+        </div>
+      </div>
+      <div class="corr-list" id="corrList"></div>
       <p style="font-size:9.5px;color:rgba(0,0,0,.28);margin-top:10px;">
         <span style="color:#059669;font-weight:700">+1.0</span> correlação positiva perfeita · 
         <span style="color:#dc2626;font-weight:700">-1.0</span> correlação negativa perfeita
       </p>`;
+    renderCorrelationRanking(word,corrs);
   }
+}
+
+function getCorrelationRanking(word,corrs){
+  const enriched=corrs.map(c=>({...c,frequency:Math.round(getVol(c.word,WEEKS.length-1))}));
+  return(corrSortMode==='fator-r'?enriched.filter(c=>c.r>0).sort((a,b)=>b.r-a.r):enriched.sort((a,b)=>b.frequency-a.frequency)).slice(0,8);
+}
+
+function renderCorrelationRanking(word,corrs=getCorrelations(word),animate=false){
+  const list=document.getElementById('corrList');if(!list)return;
+  const oldPositions=new Map([...list.children].map(row=>[row.dataset.word,row.getBoundingClientRect().top]));
+  const top=getCorrelationRanking(word,corrs);
+  const maxFrequency=Math.max(...top.map(c=>c.frequency),1);
+  list.innerHTML=top.map((c,i)=>{
+    const isPos=c.r>=0,cc=wColor(c.word);
+    const barW=Math.round(c.frequency/maxFrequency*100);
+    return`<div class="corr-row" data-word="${c.word}">
+      <div class="corr-rank-badge" style="background:${cc}">${i+1}</div>
+      <div class="corr-info">
+        <div class="corr-word-line"><span class="corr-word">${c.word}</span><span class="corr-volume">Frequência ${fmt(c.frequency)}</span></div>
+        <div class="corr-bar-wrap"><div class="corr-bar-fill" style="width:${barW}%;background:${cc}"></div></div>
+      </div>
+      <span class="corr-val" style="color:${isPos?'#059669':'#dc2626'}">r ${isPos?'+':''}${c.r.toFixed(2)}</span>
+    </div>`;
+  }).join('');
+  if(animate&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    [...list.children].forEach((row,i)=>{
+      const oldTop=oldPositions.get(row.dataset.word);
+      if(oldTop==null){row.animate([{opacity:0,transform:'translateY(12px)'},{opacity:1,transform:'translateY(0)'}],{duration:420,delay:i*24,easing:'cubic-bezier(.22,1,.36,1)'});return;}
+      const delta=oldTop-row.getBoundingClientRect().top;
+      if(Math.abs(delta)>1)row.animate([{transform:`translateY(${delta}px)`},{transform:'translateY(0)'}],{duration:620,easing:'cubic-bezier(.22,1,.36,1)'});
+    });
+  }
+}
+
+function setCorrelationSort(mode,word){
+  if(corrSortMode===mode)return;
+  corrSortMode=mode;
+  document.getElementById('corrSortFrequency')?.classList.toggle('on',mode==='frequencia');
+  document.getElementById('corrSortR')?.classList.toggle('on',mode==='fator-r');
+  renderCorrelationRanking(word,getCorrelations(word),true);
 }
 
 // ── Animated candidate line race ─────────────────────────────────────────

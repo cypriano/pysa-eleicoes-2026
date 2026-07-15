@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>“Síndrome respiratória” dispara no Instagram em maio — Pysa Eleições</title>
+  <title>“Síndrome respiratória” dispara no Instagram em maio — Pysa Eleições 2026</title>
   <meta name="description" content="Análise expandida sobre a circulação do termo síndrome respiratória no Instagram em maio de 2025." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -43,10 +43,15 @@
     .article-layout{max-width:1080px;margin:0 auto;padding:76px 48px 100px;display:grid;grid-template-columns:220px minmax(0,680px);gap:72px;align-items:start}
     .summary{position:sticky;top:94px;border-top:2px solid var(--blue);padding-top:16px}
     .summary-title{font-size:10px;font-weight:800;letter-spacing:1.3px;text-transform:uppercase;color:var(--blue);margin-bottom:12px}
-    .summary ul{list-style:none;display:grid;gap:11px}.summary li{font-family:Inter,sans-serif;font-size:11.5px;line-height:1.5;color:rgba(14,22,66,.55);padding-bottom:11px;border-bottom:1px solid var(--line)}
+    .summary-call{font-size:14px;line-height:1.35;font-weight:800;letter-spacing:-.2px;color:var(--ink);margin-bottom:17px}
+    .summary-points{list-style:none;display:grid;gap:10px;margin-bottom:22px}.summary-points li{font-family:Inter,sans-serif;font-size:10.5px;line-height:1.45;color:rgba(14,22,66,.5)}
+    .summary-nav{display:grid;border-top:1px solid var(--line)}
+    .summary-nav a{position:relative;padding:10px 8px 10px 16px;border-bottom:1px solid var(--line);font-family:Inter,sans-serif;font-size:10.5px;line-height:1.35;color:rgba(14,22,66,.48);text-decoration:none;transition:.2s}
+    .summary-nav a::before{content:'';position:absolute;left:0;top:15px;width:6px;height:6px;border-radius:50%;background:rgba(14,22,66,.16);transition:.2s}
+    .summary-nav a:hover,.summary-nav a.active{color:var(--blue);font-weight:700}.summary-nav a.active::before{background:var(--blue);box-shadow:0 0 0 4px rgba(26,43,201,.1)}
     .article{font-family:Inter,sans-serif;font-size:16.5px;line-height:1.85;color:rgba(14,22,66,.78)}
     .article p+p{margin-top:22px}
-    .section-title{display:flex;align-items:center;gap:10px;margin:54px 0 20px;font-family:'Plus Jakarta Sans',sans-serif;font-size:26px;line-height:1.15;letter-spacing:-.8px;font-weight:700;color:var(--blue)}
+    .section-title{display:flex;align-items:center;gap:10px;margin:54px 0 20px;font-family:'Plus Jakarta Sans',sans-serif;font-size:26px;line-height:1.15;letter-spacing:-.8px;font-weight:700;color:var(--blue);scroll-margin-top:96px}
     .section-title::before{content:'';width:20px;height:2px;flex:0 0 20px;border-radius:999px;background:var(--blue)}
     .callout{margin:34px 0;padding:24px 26px;border-left:3px solid var(--blue);border-radius:0 14px 14px 0;background:rgba(26,43,201,.055);font-family:'Plus Jakarta Sans',sans-serif;color:var(--ink)}
     .callout strong{display:block;font-size:18px;margin-bottom:7px}.callout p{font-family:Inter,sans-serif;font-size:14px;line-height:1.65;color:var(--muted)}
@@ -75,7 +80,7 @@
       <a class="brand-lockup" href="index.html">
         <img class="brand-logo" src="logo-labic-2026.png" alt="Labic">
         <span class="brand-divider" aria-hidden="true"></span>
-        <span class="brand">Pysa <span>Eleições</span></span>
+        <span class="brand">Pysa <span>Eleições 2026</span></span>
       </a>
       <a class="back" href="index.html">Voltar aos destaques</a>
     </div>
@@ -110,12 +115,24 @@
     <div class="article-layout">
       <aside class="summary" aria-label="Resumo da notícia">
         <p class="summary-title">Em resumo</p>
-        <ul>
+        <p class="summary-call">“Síndrome respiratória” dispara no Instagram em maio</p>
+        <ul class="summary-points">
           <li>As menções cresceram junto com os casos de síndrome respiratória aguda grave.</li>
           <li>Imprensa e especialistas deram centralidade à vacinação e à situação dos hospitais.</li>
           <li>A conversa formou sete grandes grupos interligados no Instagram.</li>
           <li>Comentários negacionistas ainda conquistaram visibilidade pelo engajamento.</li>
         </ul>
+        <nav class="summary-nav" aria-label="Tópicos da matéria">
+          <a href="#crescimento">O crescimento das menções</a>
+          <a href="#linguagem">Uma linguagem comum</a>
+          <a href="#rede">A rede da conversação</a>
+          <a href="#grupos">Sete grupos conectados</a>
+          <a href="#vacinacao">Risco e baixa vacinação</a>
+          <a href="#comentarios">A disputa nos comentários</a>
+          <a href="#comunicacao">Comunicação pública</a>
+          <a href="#metodologia">Como a rede foi construída</a>
+          <a href="#sintese">Síntese da análise</a>
+        </nav>
       </aside>
 
       <article class="article">
@@ -123,57 +140,57 @@
 
         <p>O conjunto observado reuniu 3.408 publicações, cerca de 146 milhões de visualizações e 126 mil comentários. Veículos de imprensa, perfis institucionais, profissionais de saúde, páginas locais e criadores de conteúdo ajudaram a levar o tema a públicos muito diferentes. A cobertura combinou relatos sobre aumento de casos e internações com orientações de prevenção e incentivo à vacinação.</p>
 
-        <h2 class="section-title">O crescimento das menções</h2>
+        <h2 class="section-title" id="crescimento">O crescimento das menções</h2>
         <p>Entre janeiro e maio, as referências ao termo avançaram até atingir seu ponto mais expressivo no último mês do período analisado. Esse movimento coincidiu com o agravamento da situação epidemiológica e com a ampliação de notícias sobre procura por atendimento, pressão sobre hospitais e circulação de vírus respiratórios.</p>
 
         <p>O destaque alcançado pela expressão mostra como uma terminologia técnica pode entrar rapidamente no vocabulário cotidiano quando diferentes canais passam a empregá-la ao mesmo tempo. Em vez de limitar a discussão a uma doença específica, “síndrome respiratória” funcionou como uma categoria mais ampla para tratar sintomas, riscos, internações e prevenção.</p>
 
-        <h2 class="section-title">Uma linguagem comum</h2>
+        <h2 class="section-title" id="linguagem">Uma linguagem comum</h2>
         <p>A palavra “gripe” apareceu fortemente relacionada à vacinação no mesmo período. Essa aproximação ajudou a traduzir a discussão para um repertório conhecido da população e a afastar parte das controvérsias ligadas ao vocabulário da covid. Embora o termo também pudesse aparecer em outros contextos sanitários, a associação predominante apontava para campanhas de imunização e cuidado coletivo.</p>
 
         <p>Lives, entrevistas com especialistas, depoimentos de pacientes, notícias, alertas e publicações de serviço formaram uma espécie de educação midiática em tempo real. Ao repetir explicações e orientações, esses conteúdos procuraram reduzir o desdém diante das medidas de contenção e reforçar especialmente a importância da vacina contra a influenza.</p>
 
         <div class="callout"><strong>O vocabulário também organiza a resposta pública.</strong><p>Quando muitos canais adotam termos semelhantes, a audiência encontra um enquadramento comum para reconhecer riscos, interpretar indicadores e procurar medidas de prevenção.</p></div>
 
-        <h2 class="section-title">A rede da conversação</h2>
+        <h2 class="section-title" id="rede">A rede da conversação</h2>
         <p>Na cartografia, os canais foram conectados às palavras que utilizaram. O desenho resultante mostra uma rede extensa, composta por veículos nacionais e regionais, órgãos públicos, páginas de entretenimento, perfis políticos, médicos, comunicadores e influenciadores. O tamanho e a posição dos nós ajudam a perceber quais contas tiveram maior capacidade de articulação ou alcance.</p>
 
         <p>Os temas mais frequentes foram a superlotação hospitalar, a falta de leitos, as campanhas oficiais de vacinação e as dificuldades enfrentadas pela população para se imunizar. A desinformação permaneceu presente, mas não foi o principal eixo da produção publicada pelos canais mapeados.</p>
 
-        <h2 class="section-title">Sete grupos conectados</h2>
+        <h2 class="section-title" id="grupos">Sete grupos conectados</h2>
         <p>A análise de modularidade identificou sete grandes comunidades. Elas representam conjuntos de canais que compartilham vocabulários, audiências ou recortes territoriais semelhantes. A narrativa de emergência e de aumento dos casos atravessa esses grupos e ajuda a moldar o sentimento político em torno do tema.</p>
 
         <p>Uma das comunidades reúne perfis como Ministério da Saúde, Átila Iamarino, Léo Dias, Floripa Mil Graus, Dr. Francisco Cardoso, Zero Hora, Itatiaia, Dra. Aline Quental e outros grandes canais. Esses atores funcionaram como polos de distribuição de informações sobre emergência hospitalar, limitações no número de leitos, internações e prevenção.</p>
 
         <p>Nesse grupo, a defesa da vacinação aparece ligada às medidas de mitigação e aos alertas sobre a capacidade dos hospitais. Minas Gerais e Santa Catarina ganham destaque em conteúdos que relatam o aumento das infecções e a pressão sobre os serviços de saúde.</p>
 
-        <h2 class="section-title">Risco e baixa vacinação</h2>
+        <h2 class="section-title" id="vacinacao">Risco e baixa vacinação</h2>
         <p>Outra comunidade, visualmente representada em azul na cartografia original, enfatiza riscos e complicações relacionados à baixa cobertura vacinal e à insuficiência de leitos. Nesse contexto, ganhou circulação um vídeo do prefeito de Goiânia, Sandro Mabel, cobrando a vacinação de crianças, idosos e gestantes e alertando que as UTIs também precisam atender infartos e outras doenças graves.</p>
 
         <p>A reação à publicação transformou os comentários em um espaço espontâneo de diagnóstico sobre o acesso à vacinação. Usuários relataram que os horários dos postos são incompatíveis com jornadas extensas de trabalho, pediram pontos de imunização mais acessíveis e mencionaram falta de profissionais habilitados em salas de vacina.</p>
 
         <div class="callout"><strong>Informação e acesso precisam caminhar juntos.</strong><p>Campanhas de conscientização têm alcance limitado quando a população encontra horários restritos, deslocamentos difíceis ou equipes insuficientes. A conversa digital também aponta problemas concretos de gestão.</p></div>
 
-        <h2 class="section-title">A disputa nos comentários</h2>
+        <h2 class="section-title" id="comentarios">A disputa nos comentários</h2>
         <p>Apesar da predominância de conteúdos informativos, comentários contrários às vacinas receberam muitas reações. Eles repetiram alegações sem evidência sobre ineficácia, trombose, infarto e outros efeitos adversos. A recorrência dessas mensagens sugere que o modelo mental do negacionismo construído durante a pandemia continua sendo reutilizado sempre que a vacinação volta ao centro da discussão.</p>
 
         <p>Esse tipo de comentário se beneficia da dinâmica das plataformas. Mensagens provocativas geram medo, indignação e respostas; com mais interações, passam a ocupar posições de maior visibilidade. Mesmo quando os usuários respondem para contestar uma informação falsa, podem contribuir involuntariamente para fazê-la circular.</p>
 
         <p>Por isso, a análise recomenda que gestores, especialistas e influenciadores eduquem suas audiências de modo direto. Explicar antecipadamente dúvidas recorrentes, oferecer referências confiáveis e alertar sobre estratégias de provocação pode reduzir o efeito de conteúdos criados apenas para capturar engajamento.</p>
 
-        <h2 class="section-title">Oportunidades para a comunicação pública</h2>
+        <h2 class="section-title" id="comunicacao">Oportunidades para a comunicação pública</h2>
         <p>A adoção consistente de um léxico comum pode evitar polêmicas artificiais e facilitar a compreensão dos riscos. A expressão “síndrome respiratória” oferece uma linguagem relativamente neutra para comunicar indicadores epidemiológicos, medidas preventivas e informações sobre vacinação.</p>
 
         <p>O estudo observa que o termo poderia ser mais explorado por autoridades nacionais e também por grupos de oposição. Para os gestores, ele abre espaço para explicar a situação sanitária com clareza. Para atores de fiscalização e oposição, permite cobrar ações concretas, como maior velocidade de vacinação, ampliação de horários e melhoria do acesso aos postos — medidas semelhantes às discutidas em outras emergências, como a dengue.</p>
 
-        <h2 class="section-title">Como a rede foi construída</h2>
+        <h2 class="section-title" id="metodologia">Como a rede foi construída</h2>
         <p>A metodologia parte de uma rede formada pela díade palavra–canal. Foram levantadas palavras presentes nos textos das publicações e também nas imagens associadas aos termos “síndrome respiratória” e “SRAG”. Em seguida, cada palavra foi conectada aos canais que a empregaram.</p>
 
         <p>A rede foi processada no Gephi e separada por modularidade. Esse procedimento agrupa nós com maior proximidade e revela quais vocabulários interessam mais a determinados conjuntos de canais. Assim, as comunidades não são definidas previamente: elas emergem das relações observadas nos dados.</p>
 
         <p>Informações de interação — como o desempenho médio das publicações — também foram incorporadas como atributos dos nós. Essa camada permite comparar presença, centralidade e repercussão, ajudando a identificar quais canais influenciam com mais força o sentimento público sobre o assunto.</p>
 
-        <h2 class="section-title">Síntese da análise</h2>
+        <h2 class="section-title" id="sintese">Síntese da análise</h2>
         <p>A expansão de “síndrome respiratória” no Instagram mostra uma conversa pública predominantemente organizada em torno de emergência hospitalar, prevenção e vacinação. A rede conseguiu conectar atores de perfis muito diferentes e disseminar uma terminologia comum em larga escala.</p>
 
         <p>Ao mesmo tempo, a discussão evidencia dois desafios persistentes. O primeiro é operacional: ampliar o acesso real às vacinas e adequar os serviços à rotina da população. O segundo é comunicacional: impedir que comentários provocativos e desinformativos capturem a atenção e distorçam a percepção de risco. A resposta mais eficaz depende da combinação entre linguagem clara, serviços acessíveis e atuação coordenada dos canais de confiança.</p>
@@ -189,7 +206,7 @@
   <footer>
     <div class="footer-inner">
       <div class="footer-info">
-        <div class="footer-brand"><p class="pysa">Pysa</p><p class="elections">Eleições</p></div>
+        <div class="footer-brand"><p class="pysa">Pysa</p><p class="elections">Eleições 2026</p></div>
         <p class="footer-description">PYSA é uma plataforma avançada de social listening voltada ao monitoramento, análise e visualização de dados de redes sociais.</p>
         <p class="footer-credit">Desenvolvido por <strong>Labic</strong> | 2026</p>
       </div>
@@ -199,5 +216,19 @@
       </div>
     </div>
   </footer>
+  <script>
+    (()=>{
+      const links=[...document.querySelectorAll('.summary-nav a')];
+      const sections=links.map(link=>document.querySelector(link.getAttribute('href'))).filter(Boolean);
+      const setActive=id=>links.forEach(link=>link.classList.toggle('active',link.getAttribute('href')===`#${id}`));
+      links.forEach(link=>link.addEventListener('click',()=>setActive(link.getAttribute('href').slice(1))));
+      const observer=new IntersectionObserver(entries=>{
+        const visible=entries.filter(entry=>entry.isIntersecting).sort((a,b)=>a.boundingClientRect.top-b.boundingClientRect.top)[0];
+        if(visible)setActive(visible.target.id);
+      },{rootMargin:'-18% 0px -68% 0px',threshold:[0,1]});
+      sections.forEach(section=>observer.observe(section));
+      if(sections[0])setActive(sections[0].id);
+    })();
+  </script>
 </body>
 </html>
