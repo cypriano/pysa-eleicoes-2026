@@ -74,7 +74,9 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#faf7f2;color:#0e1642
 .toggle-sw::after{content:'';position:absolute;width:14px;height:14px;background:#fff;border-radius:50%;top:2px;left:2px;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2);}
 .toggle-sw.on::after{transform:translateX(16px);}
 /* search */
-.search-wrap{position:relative;margin-bottom:14px;}
+.search-chart-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:14px;}
+.search-wrap{position:relative;flex:1;min-width:0;margin-bottom:0;}
+.search-chart-types{display:flex;align-items:center;gap:6px;flex:0 0 auto;padding-top:3px;}
 .search-wrap .search-icon{position:absolute;left:14px;top:20px;transform:translateY(-50%);pointer-events:none;}
 .search-input{width:100%;border:1px solid rgba(0,0,0,.1);border-radius:14px;padding:10px 88px 10px 40px;font-size:13.5px;font-family:inherit;background:rgba(255,255,255,.7);color:#0e1642;outline:none;transition:all .18s;}
 .search-input:focus{border-color:rgba(26,43,201,.35);background:#fff;}
@@ -161,6 +163,15 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#faf7f2;color:#0e1642
 @keyframes spin{to{transform:rotate(360deg)}}
 /* chart inner */
 .chart-inner{flex:1;min-width:0;display:flex;flex-direction:column;position:relative;}
+.chart-context{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 14px 7px;border-bottom:1px solid rgba(0,0,0,.035);background:rgba(255,255,255,.24);}
+.chart-context-legend{display:flex;align-items:center;gap:4px;flex-wrap:wrap;min-width:0;}
+.chart-context-title{font-size:7px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;color:rgba(0,0,0,.22);margin-right:1px;}
+.chart-context-chip{display:inline-flex;align-items:center;gap:3px;padding:3px 6px;border-radius:999px;background:rgba(0,0,0,.032);color:rgba(14,22,66,.46);font-size:7.5px;font-weight:650;white-space:nowrap;}
+.chart-context-chip b{font-weight:800;color:rgba(14,22,66,.66);}
+.chart-report-footer{display:flex;align-items:center;justify-content:center;gap:18px;padding:15px 18px 17px;background:linear-gradient(180deg,rgba(26,43,201,.018),rgba(26,43,201,.055));}
+.chart-report-copy{display:flex;flex-direction:column;gap:2px;text-align:right}.chart-report-copy strong{font-size:10px;color:#0e1642}.chart-report-copy span{font-size:8.5px;color:rgba(14,22,66,.38)}
+.report-btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;flex:0 0 auto;border:0;border-radius:999px;background:#1a2bc9;color:#fff;padding:10px 17px;font:800 10px 'Plus Jakarta Sans',sans-serif;cursor:pointer;box-shadow:0 8px 22px rgba(26,43,201,.2);transition:.17s;}
+.report-btn:hover{background:#1423aa;transform:translateY(-1px)}.report-btn:disabled{opacity:.58;cursor:wait;transform:none;box-shadow:none;}
 .chart-svg-area{flex:1;padding:16px 0 0;overflow:hidden;min-height:0;}
 .chart-svg-area svg{overflow:hidden;}
 .chart-status{display:flex;align-items:center;gap:10px;padding:10px 20px 12px;border-top:1px solid rgba(0,0,0,.05);flex-wrap:wrap;min-height:38px;}
@@ -181,7 +192,7 @@ body.lexical-fullscreen{overflow:hidden;}
 .section-wrap.is-fullscreen .chart-area{grid-area:chart;min-height:0;height:100%;border-radius:18px;overflow:hidden;}
 .section-wrap.is-fullscreen .chart-svg-area{min-height:520px;}
 @media(max-width:900px){
-  .inner{padding:0 20px}.head-actions{position:static;justify-content:center;margin:14px auto 0}.section-wrap.is-fullscreen{overflow:auto}.section-wrap.is-fullscreen .inner{height:auto;display:flex;flex-direction:column}.section-wrap.is-fullscreen .sec-head{padding:0}.section-wrap.is-fullscreen .lexical-controls{order:2;overflow:visible}.section-wrap.is-fullscreen .chart-area{order:1;min-height:620px}.section-wrap.is-fullscreen .head-actions{justify-content:flex-start;margin-left:0}
+  .inner{padding:0 20px}.head-actions{position:static;justify-content:center;margin:14px auto 0}.section-wrap.is-fullscreen{overflow:auto}.section-wrap.is-fullscreen .inner{height:auto;display:flex;flex-direction:column}.section-wrap.is-fullscreen .sec-head{padding:0}.section-wrap.is-fullscreen .lexical-controls{order:2;overflow:visible}.section-wrap.is-fullscreen .chart-area{order:1;min-height:620px}.section-wrap.is-fullscreen .head-actions{justify-content:flex-start;margin-left:0}.search-chart-row{flex-wrap:wrap}.search-wrap{flex-basis:100%}.chart-context{align-items:flex-start;flex-direction:column}.chart-report-footer{align-items:center;flex-direction:column;gap:9px}.chart-report-copy{text-align:center}
 }
 /* tooltip */
 #tooltip{position:fixed;pointer-events:none;z-index:9999;background:#0e1642;color:#fff;border-radius:14px;padding:11px 15px;font-size:12px;box-shadow:0 8px 36px rgba(0,0,0,.25);opacity:0;transition:opacity .12s;min-width:160px;}
@@ -220,12 +231,12 @@ body.lexical-fullscreen{overflow:hidden;}
   <div class="ctrl-top">
     <span class="control-label">Origem</span>
     <div class="seg" id="sourceSeg">
-      <button class="seg-b on" data-v="proprias" onclick="setSource('proprias')">Publicações</button>
+      <button class="seg-b on" data-v="todas" onclick="setSource('todas')">Todas</button>
+      <button class="seg-b" data-v="proprias" onclick="setSource('proprias')">Publicações</button>
       <button class="seg-b" data-v="mencoes" onclick="setSource('mencoes')">Menções</button>
       <button class="seg-b" data-v="comentarios" onclick="setSource('comentarios')">Comentários</button>
       <button class="seg-b source-icon-btn" data-v="audio" onclick="setSource('audio')" aria-label="Áudio transcrito" title="Áudio transcrito"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 8v4M6.5 5v10M10 7v6M13.5 3.5v13M17 8v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
       <button class="seg-b source-icon-btn" data-v="video" onclick="setSource('video')" aria-label="Vídeos" title="Vídeos"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2.5" y="4.5" width="11" height="11" rx="2.2" stroke="currentColor" stroke-width="1.6"/><path d="m13.5 8 4-2v8l-4-2V8Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></button>
-      <button class="seg-b source-icon-btn" data-v="debates" onclick="setSource('debates')" aria-label="Debates" title="Debates"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="7" y="2.5" width="6" height="10" rx="3" stroke="currentColor" stroke-width="1.6"/><path d="M4.5 9.5a5.5 5.5 0 0 0 11 0M10 15v2.5M7 17.5h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
     </div>
     <span class="control-label">Volume por</span>
     <div class="seg" id="metricSeg">
@@ -247,12 +258,14 @@ body.lexical-fullscreen{overflow:hidden;}
   <div class="candidate-filter-row">
     <span class="control-label">Cargo</span>
     <div style="display:flex;gap:5px" id="cargoRow">
-      <button class="pill on-dark" data-v="governador">Governador</button>
-      <button class="pill" data-v="presidente">Presidente</button>
+      <button class="pill" data-v="todos">Todos</button>
+      <button class="pill" data-v="governador">Governador</button>
+      <button class="pill on-dark" data-v="presidente">Presidente</button>
       <button class="pill" data-v="senador">Senador</button>
     </div>
     <div class="ctrl-sep"></div>
     <span class="control-label">Candidatos</span>
+    <button class="pill on-dark" id="allCandidatesBtn" type="button" onclick="selectAllCandidates()">Todos</button>
     <div class="chips-row" id="candRow"></div>
     <div class="ctrl-sep"></div>
     <span class="control-label">Período</span>
@@ -261,13 +274,6 @@ body.lexical-fullscreen{overflow:hidden;}
       <button class="seg-b on" data-v="7d" onclick="setPeriod('7d')">7 dias</button>
       <button class="seg-b locked-option" type="button" aria-disabled="true" data-v="14d" data-tooltip="É preciso estar logado" title="É preciso estar logado">14 dias</button>
       <button class="seg-b locked-option" type="button" aria-disabled="true" data-v="custom" data-tooltip="Personalizar — é preciso estar logado" title="Personalizar — é preciso estar logado" aria-label="Personalizar período"><span class="custom-period-icon" aria-hidden="true">✎</span></button>
-    </div>
-    <div class="ctrl-sep"></div>
-    <div class="chart-mode-row" aria-label="Tipo de gráfico">
-    <span class="control-label">Gráfico</span>
-      <button class="chart-type-btn active" id="btn-bump" onclick="setChartType('bump')" aria-label="Bump Chart" title="Bump Chart"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M2 5c4 0 5 10 9 10s4-7 7-7M2 14c3 0 5-8 8-8s5 6 8 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
-      <button class="chart-type-btn" id="btn-stream" onclick="setChartType('stream')" aria-label="Streamgraph" title="Streamgraph"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M2 8c3-4 5 1 8-2s5 1 8-1v3c-3 2-5-1-8 2S5 8 2 12V8Z" fill="currentColor" opacity=".9"/><path d="M2 13c3-3 5 1 8-1s5 1 8-1v3c-3 1-5-1-8 1s-5-1-8 1v-3Z" fill="currentColor" opacity=".45"/></svg></button>
-      <button class="chart-type-btn" id="btn-line" onclick="setChartType('line')" aria-label="Gráfico de linhas" title="Gráfico de linhas"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m2.5 14.5 4-4 3 2 3.5-7 4.5 3" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="10.5" r="1.2" fill="currentColor"/><circle cx="13" cy="5.5" r="1.2" fill="currentColor"/></svg></button>
     </div>
   </div>
 
@@ -459,12 +465,20 @@ body.lexical-fullscreen{overflow:hidden;}
     </div>
   </div>
 
-  <div class="search-wrap">
-    <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="rgba(0,0,0,.35)" stroke-width="2.2"/><path d="m21 21-4.35-4.35" stroke="rgba(0,0,0,.35)" stroke-width="2.2" stroke-linecap="round"/></svg>
-    <input class="search-input" id="searchInput" type="text" placeholder="Buscar qualquer palavra do corpus…"/>
-    <button class="search-add" id="searchAdd" type="button" onclick="addSearchWord()" title="Adicionar palavra à comparação" aria-label="Adicionar palavra à comparação" disabled>+</button>
-    <button class="search-clear" id="searchClear" style="display:none" onclick="clearSearch()">×</button>
-    <div class="search-selections" id="searchSelections"></div>
+  <div class="search-chart-row">
+    <div class="search-wrap">
+      <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="rgba(0,0,0,.35)" stroke-width="2.2"/><path d="m21 21-4.35-4.35" stroke="rgba(0,0,0,.35)" stroke-width="2.2" stroke-linecap="round"/></svg>
+      <input class="search-input" id="searchInput" type="text" placeholder="Buscar qualquer palavra do corpus…"/>
+      <button class="search-add" id="searchAdd" type="button" onclick="addSearchWord()" title="Adicionar palavra à comparação" aria-label="Adicionar palavra à comparação" disabled>+</button>
+      <button class="search-clear" id="searchClear" style="display:none" onclick="clearSearch()">×</button>
+      <div class="search-selections" id="searchSelections"></div>
+    </div>
+    <div class="search-chart-types" aria-label="Tipo de gráfico">
+      <span class="control-label">Gráfico</span>
+      <button class="chart-type-btn active" id="btn-bump" onclick="setChartType('bump')" aria-label="Bump Chart" title="Bump Chart"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M2 5c4 0 5 10 9 10s4-7 7-7M2 14c3 0 5-8 8-8s5 6 8 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+      <button class="chart-type-btn" id="btn-stream" onclick="setChartType('stream')" aria-label="Streamgraph" title="Streamgraph"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M2 8c3-4 5 1 8-2s5 1 8-1v3c-3 2-5-1-8 2S5 8 2 12V8Z" fill="currentColor" opacity=".9"/><path d="M2 13c3-3 5 1 8-1s5 1 8-1v3c-3 1-5-1-8 1s-5-1-8 1v-3Z" fill="currentColor" opacity=".45"/></svg></button>
+      <button class="chart-type-btn" id="btn-line" onclick="setChartType('line')" aria-label="Gráfico de linhas" title="Gráfico de linhas"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m2.5 14.5 4-4 3 2 3.5-7 4.5 3" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="10.5" r="1.2" fill="currentColor"/><circle cx="13" cy="5.5" r="1.2" fill="currentColor"/></svg></button>
+    </div>
   </div>
 
   <div class="words-section">
@@ -482,11 +496,18 @@ body.lexical-fullscreen{overflow:hidden;}
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="#0e1642" stroke-width="2.2" stroke-linecap="round"/></svg>
     </button>
     <div class="chart-inner">
+      <div class="chart-context">
+        <div class="chart-context-legend" id="chartContextLegend" aria-live="polite"></div>
+      </div>
       <div class="chart-svg-area" id="chartSVGArea">
         <svg id="mainSVG" width="100%" style="display:block;"></svg>
       </div>
       <div class="chart-status" id="chartStatus">
         <span class="status-hint">Passe o mouse · Clique numa palavra para focar e detalhar</span>
+      </div>
+      <div class="chart-report-footer">
+        <div class="chart-report-copy"><strong>Transforme esta visualização em uma análise</strong><span>O relatório considera o gráfico e todos os filtros selecionados.</span></div>
+        <button class="report-btn" id="generateReportBtn" type="button" onclick="generateLexicalReport()"><span aria-hidden="true">✦</span> Gerar relatório usando modelos de I.A.</button>
       </div>
     </div>
   </div>
@@ -573,7 +594,7 @@ const WORD_COLORS=['#1a2bc9','#dc2626','#059669','#d97706','#7c3aed','#0891b2','
 const WEEKS=['D-7','D-6','D-5','D-4','D-3','D-2','Ontem','Hoje'];
 const METRIC_LABELS={publicacoes:'Frequência',usuarios:'Contas',interacoes:'Interações'};
 const METRIC_FACTORS={publicacoes:1,usuarios:.62,interacoes:18.4};
-const SOURCE_FACTORS={proprias:1,mencoes:1.34,comentarios:.82,audio:.48,video:.56,debates:.67};
+const SOURCE_FACTORS={todas:1.12,proprias:1,mencoes:1.34,comentarios:.82,audio:.48,video:.56};
 
 function wColor(word){return WORD_COLORS[WORDS.findIndex(w=>w.word===word)%WORD_COLORS.length];}
 function getVol(word,wi){
@@ -581,9 +602,9 @@ function getVol(word,wi){
   const factor=(METRIC_FACTORS[metricMode]||1)*(SOURCE_FACTORS[sourceMode]||1);
   const wordIndex=WORDS.findIndex(w=>w.word===word);
   const variation=1+((wordIndex*7+wi*3)%11-5)/100;
-  const sourceIndex={proprias:0,mencoes:1,comentarios:2,audio:3,video:4,debates:5}[sourceMode]||0;
+  const sourceIndex={todas:0,proprias:1,mencoes:2,comentarios:3,audio:4,video:5}[sourceMode]||0;
   const sourceVariation=.78+((wordIndex*11+wi*5+sourceIndex*17)%43)/100;
-  const cargoSeed={governador:3,presidente:7,senador:11}[sCargo]||3;
+  const cargoSeed={todos:13,governador:3,presidente:7,senador:11}[sCargo]||13;
   const candidateSeed=selCands.length?selCands.reduce((sum,id)=>sum+(id+1)*5,0):cargoSeed;
   const candidateVariation=.82+((wordIndex*13+wi*7+candidateSeed*11)%39)/100;
   return Math.max(0,Math.round(base*factor*variation*sourceVariation*candidateVariation));
@@ -628,10 +649,59 @@ function fmtPct(p){return p.toFixed(1)+'%';}
 // ══════════════════════════════
 //  STATE
 // ══════════════════════════════
-let sCargo='governador',selCands=[],focusWord=null,topN=8,searchQ='',searchTerms=[];
+let sCargo='presidente',selCands=[],focusWord=null,topN=8,searchQ='',searchTerms=[];
 let chartType='bump',cfgOpen=false,dpTab='candidatos',corrSortMode='frequencia';
-let metricMode='publicacoes',periodMode='7d',sourceMode='proprias',animationEnabled=true;
+let metricMode='publicacoes',periodMode='7d',sourceMode='todas',animationEnabled=true;
 let raceAnim=null,mainAnim=null,bumpDanceAnim=null,bumpPrevState=null,lineMoveAnim=null,linePrevState=null;
+
+function lexicalPeriodRange(){
+  const end=new Date();
+  const start=new Date(end);
+  start.setDate(end.getDate()-6);
+  const format=date=>date.toLocaleDateString('pt-BR',{day:'2-digit',month:'short',year:'numeric'}).replace('.','');
+  return{start:format(start),end:format(end)};
+}
+function updateChartContext(){
+  const legend=document.getElementById('chartContextLegend');if(!legend)return;
+  const sources={todas:'Todas as origens',proprias:'Publicações',mencoes:'Menções',comentarios:'Comentários',audio:'Áudio',video:'Vídeos'};
+  const charts={bump:'Bump chart',stream:'Streamgraph',line:'Linhas'};
+  const cargo={todos:'Todos os cargos',governador:'Governador',presidente:'Presidente',senador:'Senador'}[sCargo];
+  const selected=selCands.length?CANDIDATES.filter(candidate=>selCands.includes(candidate.id)).map(candidate=>candidate.name).join(', '):'Todos';
+  const range=lexicalPeriodRange();
+  const chips=[
+    ['Origem',sources[sourceMode]||sourceMode],
+    ['Cargo',cargo],
+    ['Candidatos',selected],
+    ['Volume',METRIC_LABELS[metricMode]],
+    ['Seleção',`Top ${topN}`],
+    ['Período',`${range.start} até ${range.end}`],
+    ['Gráfico',charts[chartType]]
+  ];
+  legend.innerHTML='<span class="chart-context-title">Filtros ativos</span>'+chips.map(([label,value])=>`<span class="chart-context-chip"><b>${label}</b>${value}</span>`).join('');
+}
+function generateLexicalReport(){
+  const button=document.getElementById('generateReportBtn'),original=button.innerHTML;
+  button.disabled=true;
+  button.innerHTML='<span class="ai-spinner" aria-hidden="true"></span> Modelos analisando o gráfico…';
+  const range=lexicalPeriodRange();
+  const words=getVisibleWords();
+  const lines=[
+    'PYSA Eleições 2026 — Relatório do Mapa Lexical',
+    `Período: ${range.start} até ${range.end}`,
+    `Cargo: ${{todos:'Todos os cargos',governador:'Governador',presidente:'Presidente',senador:'Senador'}[sCargo]}`,
+    `Volume: ${METRIC_LABELS[metricMode]}`,
+    `Gráfico: ${{bump:'Bump chart',stream:'Streamgraph',line:'Linhas'}[chartType]}`,
+    '',
+    'Palavras exibidas:',
+    ...words.map((item,index)=>`${index+1}. ${item.word} — ${fmt(getVol(item.word,WEEKS.length-1))}`)
+  ];
+  setTimeout(()=>{
+    const url=URL.createObjectURL(new Blob([lines.join('\n')],{type:'text/plain;charset=utf-8'}));
+    const link=document.createElement('a');link.href=url;link.download='relatorio-mapa-lexical.txt';link.click();URL.revokeObjectURL(url);
+    button.innerHTML='<span aria-hidden="true">✓</span> Relatório gerado';
+    setTimeout(()=>{button.innerHTML=original;button.disabled=false;},1800);
+  },1100);
+}
 
 function syncLexicalFullscreenButton(active){
   const btn=document.getElementById('expandLexicalBtn'),label=document.getElementById('expandLexicalLabel');
@@ -780,7 +850,8 @@ function buildWordTags(){
 // ══════════════════════════════
 function buildChips(){
   const row=document.getElementById('candRow');row.innerHTML='';
-  CANDIDATES.filter(c=>c.cargo===sCargo).forEach(c=>{
+  document.getElementById('allCandidatesBtn').classList.toggle('on-dark',selCands.length===0);
+  CANDIDATES.filter(c=>sCargo==='todos'||c.cargo===sCargo).forEach(c=>{
     const sel=selCands.includes(c.id);
     const chip=document.createElement('div');chip.className='chip';
     chip.innerHTML=`<div class="chip-av" style="${sel?`border-color:${c.color};background:${c.color}1a;color:${c.color};`:''}"><span>${c.initials}</span></div><span class="chip-lbl" style="${sel?`color:${c.color};font-weight:800;`:''}">${c.name.split(' ')[0]}</span>`;
@@ -789,6 +860,7 @@ function buildChips(){
     row.appendChild(chip);
   });
 }
+function selectAllCandidates(){selCands=[];buildChips();if(focusWord)renderDetailPanel(focusWord);render();}
 
 // ══════════════════════════════
 //  DETAIL PANEL
@@ -809,7 +881,7 @@ function renderDetailPanel(word){
   const inner=document.getElementById('dpInner');
   const wi=WORDS.findIndex(w=>w.word===word);
   const col=wColor(word);const rising=getVol(word,7)>getVol(word,0);
-  const cands=CANDIDATES.filter(c=>c.cargo===sCargo);
+  const cands=CANDIDATES.filter(c=>sCargo==='todos'||c.cargo===sCargo);
   const active=selCands.length>0?cands.filter(c=>selCands.includes(c.id)):cands;
   const ranks=computeRanks(WORDS);
   const curRank=ranks[WEEKS.length-1][word]?.rank??'—';
@@ -1020,7 +1092,7 @@ async function generateAI(word,textId,btnId,color){
   const te=document.getElementById(textId),be=document.getElementById(btnId);
   if(!te||!be)return;
   be.classList.add('loading');be.innerHTML=`<div class="ai-spinner"></div> Gerando…`;
-  const cands=CANDIDATES.filter(c=>c.cargo===sCargo);
+  const cands=CANDIDATES.filter(c=>sCargo==='todos'||c.cargo===sCargo);
   const active=selCands.length>0?cands.filter(c=>selCands.includes(c.id)):cands;
   const vis=getVisibleWords();const ranks=computeRanks(vis);const rank=ranks[WEEKS.length-1][word]?.rank??'?';
   const trend=Math.round((getVol(word,7)/Math.max(1,getVol(word,0))-1)*100);
@@ -1065,7 +1137,7 @@ function animateMainReveal(svgEl,pL,pT,cW,cH,targets){
 // ══════════════════════════════
 //  RENDER DISPATCHER
 // ══════════════════════════════
-function render(){if(chartType==='bump')renderBump();else if(chartType==='stream')renderStream();else renderLine();}
+function render(){updateChartContext();if(chartType==='bump')renderBump();else if(chartType==='stream')renderStream();else renderLine();}
 
 // ══════════════════════════════
 //  SIMPLE LINE CHART
