@@ -26,6 +26,12 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#faf7f2;color:#0e1642
 .pill:hover{border-color:rgba(0,0,0,.22);color:rgba(0,0,0,.6);}
 .pill.on-dark{background:#0e1642;color:#fff;border-color:#0e1642;}
 .pill.on-blue{background:#1a2bc9;color:#fff;border-color:#1a2bc9;}
+.cargo-filters{display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
+.pill-select{height:26px;display:flex;align-items:center;gap:6px;border:0;background:transparent;border-radius:7px;padding:0 5px;transition:all .18s;}
+.pill-select:hover,.pill-select:focus-within{background:rgba(26,43,201,.045);}
+.pill-select span{font-size:9px;font-weight:700;letter-spacing:.35px;text-transform:uppercase;color:rgba(0,0,0,.27);}
+.pill-select i{font:500 10px 'Plus Jakarta Sans',sans-serif;color:rgba(0,0,0,.17);font-style:normal;}
+.pill-select select{max-width:112px;border:0;outline:0;background:transparent;color:#0e1642;font:700 10.5px 'Plus Jakarta Sans',sans-serif;cursor:pointer;padding:0 13px 0 0;}
 
 /* ── CARDS ── */
 .card-arena{display:flex;justify-content:center;align-items:center;height:440px;overflow:hidden;}
@@ -60,8 +66,23 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#faf7f2;color:#0e1642
 
 /* ── chips ── */
 .chips-wrap{margin-bottom:18px;}
+.chips-head{display:flex;align-items:center;justify-content:flex-start;gap:10px;margin-bottom:10px;}
 .chips-label{font-size:10px;font-weight:700;color:rgba(0,0,0,.28);letter-spacing:.5px;text-transform:uppercase;margin-bottom:10px;}
+.chips-head .chips-label{margin-bottom:0;}
+.candidate-head-controls{display:flex;align-items:center;justify-content:flex-start;gap:5px;flex-wrap:wrap;}
+.candidate-head-divider{width:1px;height:18px;background:rgba(0,0,0,.09);}
+.candidate-count{margin-left:auto;font-size:9.5px;font-weight:600;color:rgba(0,0,0,.3);white-space:nowrap;}
+.candidate-browser{display:none;align-items:center;gap:8px;margin:0 0 12px;}
+.candidate-browser.visible{display:flex;}
+.candidate-search{height:32px;min-width:220px;max-width:310px;flex:1;display:flex;align-items:center;gap:7px;border:1px solid rgba(0,0,0,.09);background:rgba(255,255,255,.58);border-radius:100px;padding:0 12px;transition:all .18s;}
+.candidate-search:focus-within{border-color:rgba(26,43,201,.3);background:#fff;box-shadow:0 4px 16px rgba(14,22,66,.05);}
+.candidate-search svg{width:13px;height:13px;flex:none;color:rgba(0,0,0,.3);}
+.candidate-search input{width:100%;border:0;outline:0;background:transparent;color:#0e1642;font:600 11px 'Plus Jakarta Sans',sans-serif;}
+.candidate-search input::placeholder{color:rgba(0,0,0,.28);}
+.candidate-toggle{height:32px;border:1px solid rgba(26,43,201,.16);background:rgba(26,43,201,.045);color:#1a2bc9;border-radius:100px;padding:0 13px;font:700 10.5px 'Plus Jakarta Sans',sans-serif;cursor:pointer;white-space:nowrap;transition:all .18s;}
+.candidate-toggle:hover{background:rgba(26,43,201,.1);border-color:rgba(26,43,201,.25);}
 .chips-row{display:flex;flex-wrap:wrap;gap:6px;}
+.chips-empty{font-size:11px;color:rgba(0,0,0,.35);padding:10px 0;}
 .chip{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;padding:3px;}
 .chip-av{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;border:2px solid rgba(0,0,0,.08);background:rgba(0,0,0,.04);color:rgba(0,0,0,.3);transition:all .18s;}
 .chip-lbl{font-size:9.5px;font-weight:700;color:rgba(0,0,0,.32);transition:color .18s;text-align:center;}
@@ -149,6 +170,15 @@ html,body{overflow-x:hidden;}
   .card-stack{width:250px;height:375px;}
   .vcard-thumb{height:180px;}
   .ctrl-sep{display:none;}
+  .cargo-filters{width:100%;}
+  .candidate-head-controls{justify-content:flex-start;width:100%;}
+  .chips-head{align-items:flex-start;flex-direction:column;gap:9px;}
+  .pill-select{min-width:138px;justify-content:flex-start;}
+  .candidate-head-divider{display:none;}
+  .candidate-count{margin-left:0;}
+  .candidate-browser{align-items:stretch;flex-direction:column;}
+  .candidate-search{width:100%;max-width:none;min-width:0;}
+  .candidate-toggle{width:100%;}
   .detail-panel.open{width:270px;}
   .dp-inner{width:270px;padding:22px 16px;}
 }
@@ -198,7 +228,7 @@ html,body{overflow-x:hidden;}
     </div>
   </div>
   <div class="ctrl-top">
-    <div style="display:flex;gap:5px" id="cargoRow">
+    <div class="cargo-filters" id="cargoRow">
       <button class="pill on-dark" data-v="governador">Governador</button>
       <button class="pill" data-v="presidente">Presidente</button>
       <button class="pill" data-v="senador">Senador</button>
@@ -224,7 +254,30 @@ html,body{overflow-x:hidden;}
     </div>
   </div>
   <div class="chips-wrap">
-    <p class="chips-label" id="chipsLabel">Candidatos</p>
+    <div class="chips-head">
+      <div class="candidate-head-controls">
+        <label class="pill-select">
+          <span>Estado</span>
+          <i aria-hidden="true">|</i>
+          <select id="stateFilter" aria-label="Filtrar candidatos por estado"></select>
+        </label>
+        <label class="pill-select">
+          <span>Partido</span>
+          <i aria-hidden="true">|</i>
+          <select id="partyFilter" aria-label="Filtrar candidatos por partido político"></select>
+        </label>
+      </div>
+      <span class="candidate-head-divider" aria-hidden="true"></span>
+      <p class="chips-label" id="chipsLabel">Candidatos</p>
+      <span class="candidate-count" id="candidateCount"></span>
+    </div>
+    <div class="candidate-browser" id="candidateBrowser">
+      <label class="candidate-search">
+        <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" stroke="currentColor" stroke-width="1.7"/><path d="m12.5 12.5 4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+        <input id="candidateSearch" type="search" placeholder="Buscar entre os candidatos" aria-label="Buscar candidato pelo nome">
+      </label>
+      <button class="candidate-toggle" id="candidateToggle" type="button"></button>
+    </div>
     <div class="chips-row" id="candRow"></div>
   </div>
   <div class="chart-area" id="chartArea">
@@ -248,21 +301,40 @@ html,body{overflow-x:hidden;}
 //  DATA
 // ══════════════════════════════════════
 const CANDIDATES = [
-  {id:0,name:'João Eduardo',  initials:'JE',party:'PSD',cargo:'governador',color:'#ef4444'},
-  {id:1,name:'Luiza Santana', initials:'LS',party:'PT', cargo:'governador',color:'#3a82f6'},
-  {id:2,name:'Carlos Mendes', initials:'CM',party:'PP', cargo:'governador',color:'#10b981'},
-  {id:3,name:'Renata Vaz',    initials:'RV',party:'PL', cargo:'governador',color:'#f59e0b'},
-  {id:4,name:'Pedro Algusto', initials:'PA',party:'PL', cargo:'presidente',color:'#8b5cf6'},
-  {id:5,name:'Erudinda Noves',initials:'EN',party:'MDB',cargo:'presidente',color:'#06b6d4'},
-  {id:6,name:'Fábio Corrêa',  initials:'FC',party:'PT', cargo:'presidente',color:'#ec4899'},
-  {id:7,name:'Marta Leite',   initials:'ML',party:'PSD',cargo:'presidente',color:'#f97316'},
-  {id:8,name:'Tiago Braga',   initials:'TB',party:'PSB',cargo:'presidente',color:'#14b8a6'},
-  {id:9, name:'Marcos Vilela',initials:'MV',party:'PDT',cargo:'senador',   color:'#a855f7'},
-  {id:10,name:'Carla Fontes', initials:'CF',party:'PSDB',cargo:'senador',  color:'#0ea5e9'},
-  {id:11,name:'Bruno Assis',  initials:'BA',party:'PP', cargo:'senador',   color:'#22c55e'},
-  {id:12,name:'Débora Reis',  initials:'DR',party:'DEM',cargo:'senador',   color:'#f43f5e'},
-  {id:13,name:'Igor Pinheiro',initials:'IP',party:'PV', cargo:'senador',   color:'#84cc16'},
+  {id:0,name:'João Eduardo',  initials:'JE',party:'PSD',state:'ES',cargo:'governador',color:'#ef4444'},
+  {id:1,name:'Luiza Santana', initials:'LS',party:'PT', state:'SP',cargo:'governador',color:'#3a82f6'},
+  {id:2,name:'Carlos Mendes', initials:'CM',party:'PP', state:'RJ',cargo:'governador',color:'#10b981'},
+  {id:3,name:'Renata Vaz',    initials:'RV',party:'PL', state:'MG',cargo:'governador',color:'#f59e0b'},
+  {id:4,name:'Pedro Algusto', initials:'PA',party:'PL', state:'SP',cargo:'presidente',color:'#8b5cf6'},
+  {id:5,name:'Erudinda Noves',initials:'EN',party:'MDB',state:'ES',cargo:'presidente',color:'#06b6d4'},
+  {id:6,name:'Fábio Corrêa',  initials:'FC',party:'PT', state:'BA',cargo:'presidente',color:'#ec4899'},
+  {id:7,name:'Marta Leite',   initials:'ML',party:'PSD',state:'MG',cargo:'presidente',color:'#f97316'},
+  {id:8,name:'Tiago Braga',   initials:'TB',party:'PSB',state:'RJ',cargo:'presidente',color:'#14b8a6'},
+  {id:9, name:'Marcos Vilela',initials:'MV',party:'PDT',state:'ES',cargo:'senador',   color:'#a855f7'},
+  {id:10,name:'Carla Fontes', initials:'CF',party:'PSDB',state:'SP',cargo:'senador',  color:'#0ea5e9'},
+  {id:11,name:'Bruno Assis',  initials:'BA',party:'PP', state:'RJ',cargo:'senador',   color:'#22c55e'},
+  {id:12,name:'Débora Reis',  initials:'DR',party:'DEM',state:'MG',cargo:'senador',   color:'#f43f5e'},
+  {id:13,name:'Igor Pinheiro',initials:'IP',party:'PV', state:'BA',cargo:'senador',   color:'#84cc16'},
 ];
+// Massa demonstrativa para avaliar a interface com 50 candidaturas ao Senado.
+const SENATOR_STATES=['AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS','MG','PA','PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC','SP','SE','TO'];
+const SENATOR_PARTIES=['MDB','PDT','PL','PP','PSB','PSD','PSDB','PT','PV','REDE','UNIÃO','NOVO'];
+const SENATOR_FIRST_NAMES=['Adriana','Alexandre','Aline','Antônio','Beatriz','Caio','Camila','Daniel','Denise','Eduardo','Elisa','Felipe','Fernanda','Gabriel','Helena','Hugo','Isabela','Jorge','Juliana','Leandro'];
+const SENATOR_LAST_NAMES=['Almeida','Barbosa','Castro','Duarte','Esteves','Freitas','Gomes','Lacerda','Machado','Nascimento','Oliveira','Pereira','Queiroz','Ramos','Siqueira','Teixeira','Vasconcelos','Xavier','Andrade','Bittencourt','Cardoso','Farias','Moraes'];
+const SENATOR_COLORS=['#2563eb','#7c3aed','#db2777','#dc2626','#ea580c','#ca8a04','#65a30d','#059669','#0d9488','#0891b2','#4f46e5','#9333ea'];
+for(let i=0;i<45;i++){
+  const first=SENATOR_FIRST_NAMES[i%SENATOR_FIRST_NAMES.length];
+  const last=SENATOR_LAST_NAMES[(i*7)%SENATOR_LAST_NAMES.length];
+  CANDIDATES.push({
+    id:14+i,
+    name:`${first} ${last}`,
+    initials:`${first[0]}${last[0]}`,
+    party:SENATOR_PARTIES[(i*5)%SENATOR_PARTIES.length],
+    state:SENATOR_STATES[i%SENATOR_STATES.length],
+    cargo:'senador',
+    color:SENATOR_COLORS[i%SENATOR_COLORS.length]
+  });
+}
 const CATEGORIES = ['Segurança','Saúde','Educação','Habitação','Economia','Meio Ambiente'];
 const CAT_COLORS = {'Segurança':'#ef4444','Saúde':'#3a82f6','Educação':'#10b981','Habitação':'#f59e0b','Economia':'#8b5cf6','Meio Ambiente':'#06b6d4'};
 const SEL_COLORS = ['#1a2bc9','#dc2626','#059669','#d97706','#7c3aed','#0891b2'];
@@ -347,6 +419,8 @@ buildCarousel();
 //  2. SENTIMENTO
 // ══════════════════════════════════════
 let sCargo='governador', sMetric='posts', layout='pack', displayM='volume';
+let sState='todos', sParty='todos';
+let candidatesExpanded=false, candidateQuery='';
 let compareOn=false, selCands=[];
 let focusCat=null; // category name when circle clicked
 let animNodes=[], animFrame=null;
@@ -361,7 +435,7 @@ function bindPills(rowId,fn){
     });
   });
 }
-bindPills('cargoRow',v=>{sCargo=v;selCands=[];focusCat=null;closeDetail();buildChips();renderSent();});
+bindPills('cargoRow',v=>{sCargo=v;sState='todos';sParty='todos';candidatesExpanded=false;candidateQuery='';selCands=[];focusCat=null;closeDetail();buildCandidateFilters();buildChips();renderSent();});
 bindPills('metricRow',v=>{sMetric=v;if(focusCat)openDetail(focusCat);renderSent();});
 
 function setLayout(v){layout=v;document.querySelectorAll('#layoutSeg .seg-b').forEach(b=>b.classList.toggle('on',b.dataset.v===v));renderSent();}
@@ -375,16 +449,39 @@ document.getElementById('cmpBtn').addEventListener('click',()=>{
 
 function buildChips(){
   const row=document.getElementById('candRow');
+  const browser=document.getElementById('candidateBrowser');
+  const search=document.getElementById('candidateSearch');
+  const toggle=document.getElementById('candidateToggle');
   row.innerHTML='';
   document.getElementById('chipsLabel').textContent=
     compareOn?'Candidatos — selecione para comparar (ilimitado)':'Candidatos — clique para filtrar';
-  const cands=CANDIDATES.filter(c=>c.cargo===sCargo);
-  cands.forEach(c=>{
+  const allCands=getFilteredCandidates();
+  const normalizedQuery=normalizeCandidateText(candidateQuery);
+  const matchedCands=normalizedQuery
+    ?allCands.filter(c=>normalizeCandidateText(`${c.name} ${c.party} ${c.state}`).includes(normalizedQuery))
+    :allCands;
+  const cands=[...matchedCands].sort((a,b)=>{
+    const aSelected=selCands.includes(a.id),bSelected=selCands.includes(b.id);
+    return aSelected===bSelected?0:aSelected?-1:1;
+  });
+  const visibleCands=(candidatesExpanded||normalizedQuery)?cands:cands.slice(0,10);
+  document.getElementById('candidateCount').textContent=normalizedQuery
+    ?`${cands.length} de ${allCands.length} candidatos`
+    :`${allCands.length} ${allCands.length===1?'candidato':'candidatos'}`;
+  browser.classList.toggle('visible',allCands.length>10||!!normalizedQuery);
+  search.value=candidateQuery;
+  toggle.style.display=allCands.length>10||normalizedQuery?'block':'none';
+  toggle.textContent=normalizedQuery?'Limpar busca':candidatesExpanded?'Mostrar menos':`Ver todos (+${Math.max(0,allCands.length-10)})`;
+  if(!visibleCands.length){
+    row.innerHTML='<p class="chips-empty">Nenhum candidato encontrado para esta busca.</p>';
+    return;
+  }
+  visibleCands.forEach(c=>{
     const si=selCands.indexOf(c.id);const sel=si!==-1;
     const col=sel?(SEL_COLORS[si%SEL_COLORS.length]):null;
     const chip=document.createElement('div');chip.className='chip';
     chip.innerHTML=`<div class="chip-av" style="${sel?`border-color:${col};background:${col}1a;color:${col};`:''}"><span>${c.initials}</span></div><span class="chip-lbl" style="${sel?`color:${col};font-weight:800;`:''}"><span>${c.name.split(' ')[0]}</span></span>`;
-    chip.title=`${c.name} · ${c.party}`;
+    chip.title=`${c.name} · ${c.party} · ${c.state}`;
     chip.addEventListener('click',()=>{
       const idx=selCands.indexOf(c.id);
       if(idx!==-1) selCands.splice(idx,1);
@@ -395,6 +492,51 @@ function buildChips(){
     row.appendChild(chip);
   });
 }
+
+function normalizeCandidateText(value){
+  return value.toLocaleLowerCase('pt-BR').normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim();
+}
+
+function getFilteredCandidates(){
+  return CANDIDATES.filter(c=>
+    c.cargo===sCargo&&
+    (sState==='todos'||c.state===sState)&&
+    (sParty==='todos'||c.party===sParty)
+  );
+}
+
+function fillFilter(select,values,current,allLabel){
+  select.innerHTML=`<option value="todos">${allLabel}</option>`+
+    values.map(value=>`<option value="${value}">${value}</option>`).join('');
+  select.value=values.includes(current)?current:'todos';
+}
+
+function buildCandidateFilters(){
+  const cargoCandidates=CANDIDATES.filter(c=>c.cargo===sCargo);
+  const states=[...new Set(cargoCandidates.map(c=>c.state))].sort();
+  if(sState!=='todos'&&!states.includes(sState))sState='todos';
+  const stateCandidates=cargoCandidates.filter(c=>sState==='todos'||c.state===sState);
+  const parties=[...new Set(stateCandidates.map(c=>c.party))].sort();
+  if(sParty!=='todos'&&!parties.includes(sParty))sParty='todos';
+  fillFilter(document.getElementById('stateFilter'),states,sState,'Todos');
+  fillFilter(document.getElementById('partyFilter'),parties,sParty,'Todos');
+}
+
+document.getElementById('stateFilter').addEventListener('change',e=>{
+  sState=e.target.value;sParty='todos';candidatesExpanded=false;candidateQuery='';selCands=[];focusCat=null;closeDetail();
+  buildCandidateFilters();buildChips();renderSent();
+});
+document.getElementById('partyFilter').addEventListener('change',e=>{
+  sParty=e.target.value;candidatesExpanded=false;candidateQuery='';selCands=[];focusCat=null;closeDetail();buildChips();renderSent();
+});
+document.getElementById('candidateSearch').addEventListener('input',e=>{
+  candidateQuery=e.target.value;buildChips();
+});
+document.getElementById('candidateToggle').addEventListener('click',()=>{
+  if(candidateQuery){candidateQuery='';document.getElementById('candidateSearch').value='';}
+  else candidatesExpanded=!candidatesExpanded;
+  buildChips();
+});
 
 // ── Detail panel ───────────────────────────────────
 function openDetail(cat){
@@ -416,7 +558,7 @@ function closeDetail(){
 function renderDetailPanel(cat){
   const inner=document.getElementById('dpInner');
   const color=CAT_COLORS[cat];
-  const cands=CANDIDATES.filter(c=>c.cargo===sCargo);
+  const cands=getFilteredCandidates();
   const activeCandIds=selCands.length>0?selCands:cands.map(c=>c.id);
   const totalCatRaw=activeCandIds.reduce((s,cid)=>s+getRaw(cid,cat,'posts'),0);
   const totalCatComments=activeCandIds.reduce((s,cid)=>s+getRaw(cid,cat,'comments'),0);
@@ -611,7 +753,7 @@ async function generateAI(cat, textId, btnId, color){
   btnEl.classList.add('loading');
   btnEl.innerHTML=`<div class="ai-spinner"></div> Gerando…`;
 
-  const cands=CANDIDATES.filter(c=>c.cargo===sCargo);
+  const cands=getFilteredCandidates();
   const activeCandIds=selCands.length>0?selCands:cands.map(c=>c.id);
   const totalCatPosts=activeCandIds.reduce((s,cid)=>s+getRaw(cid,cat,'posts'),0);
   const totalCatInteractions=activeCandIds.reduce((s,cid)=>s+getRaw(cid,cat,'interactions'),0);
@@ -702,7 +844,7 @@ function hideTT(){TT.style.opacity='0';}
 function renderSent(){
   const svg=document.getElementById('sentSVG');
   const W=960,H=540;
-  const cands=CANDIDATES.filter(c=>c.cargo===sCargo);
+  const cands=getFilteredCandidates();
   const activeCandIds=selCands.length>0?selCands:cands.map(c=>c.id);
   const catRaws=CATEGORIES.map(cat=>activeCandIds.reduce((s,cid)=>s+getRaw(cid,cat,sMetric),0));
   const totalAll=catRaws.reduce((s,v)=>s+v,0);
@@ -863,6 +1005,7 @@ function drawSentiment(svg,nodes,activeCandIds,totalAll,W,H){
   svg.addEventListener('mousemove',moveTT);
 }
 
+buildCandidateFilters();
 buildChips();
 renderSent();
 </script>

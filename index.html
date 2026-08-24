@@ -392,12 +392,19 @@ Modelos preditivos sugerem que, se o padrão se mantiver por mais 72 horas, have
       </script>
 
       <style>
-        .pysa-network-picker{display:inline-flex;align-items:center;gap:4px;margin-left:2px;flex-wrap:nowrap}
+        .pysa-network-picker{display:inline-flex;flex-direction:column;align-items:flex-start;gap:5px;margin-left:2px}
+        .pysa-network-line{display:inline-flex;align-items:center;gap:4px;flex-wrap:nowrap}
         .pysa-network-label,.pysa-news-filter-label{font:800 9px 'Plus Jakarta Sans',sans-serif;letter-spacing:.7px;text-transform:uppercase;color:rgba(14,22,66,.34)}
         .pysa-network-label{margin-right:2px}
         .pysa-network-btn{height:24px;min-width:28px;padding:0 7px;border-radius:999px;border:1px solid rgba(14,22,66,.12);background:transparent;color:rgba(14,22,66,.4);display:inline-flex;align-items:center;justify-content:center;gap:4px;font:700 9px 'Plus Jakarta Sans',sans-serif;cursor:pointer;transition:.18s}
         .pysa-network-btn:hover{border-color:rgba(26,43,201,.28);color:#1a2bc9}.pysa-network-btn.is-active{border-color:rgba(26,43,201,.5);background:rgba(26,43,201,.07);color:#1a2bc9}
         .pysa-network-icon{font-size:11px;line-height:1}.pysa-network-btn[data-network="instagram"] .pysa-network-icon{font-size:14px}
+        .pysa-raiox-state{position:relative;display:inline-flex;align-items:center;gap:6px;margin-left:2px;color:rgba(14,22,66,.42);transition:color .18s}
+        .pysa-raiox-state:hover,.pysa-raiox-state:focus-within{color:#1a2bc9}
+        .pysa-raiox-state-label{font:800 11px 'Plus Jakarta Sans',sans-serif;letter-spacing:.35px;text-transform:uppercase;color:rgba(14,22,66,.36)}
+        .pysa-raiox-state-divider{font:500 11px 'Plus Jakarta Sans',sans-serif;color:rgba(14,22,66,.2)}
+        .pysa-raiox-state select{appearance:none;-webkit-appearance:none;border:0;outline:0;background:transparent;color:inherit;padding:2px 16px 2px 0;font:700 11px 'Plus Jakarta Sans',sans-serif;cursor:pointer;max-width:94px}
+        .pysa-raiox-state-arrow{position:absolute;right:0;top:50%;transform:translateY(-55%);font-size:10px;pointer-events:none;opacity:.65}
         .pysa-news-filter{position:relative;width:min(1120px,calc(100% - 80px));margin:25px auto 0;padding:9px 0 3px;border:0;font-family:'Plus Jakarta Sans',sans-serif;align-self:center}
         .pysa-news-headrow{align-items:center;flex-direction:column;text-align:center;margin-bottom:25px!important}
         .pysa-news-headrow>div:first-child{width:min(620px,calc(100% - 40px))!important;max-width:620px;margin:0 auto!important;align-items:center!important;text-align:center}
@@ -466,8 +473,9 @@ Modelos preditivos sugerem que, se o padrão se mantiver por mais 72 horas, have
           function enhanceRaioX(){
             const heading=findHeading('Raio X');if(document.getElementById('pysaNetworkPicker'))return true;if(!heading)return false;
             const picker=document.createElement('div');picker.className='pysa-network-picker';picker.id='pysaNetworkPicker';picker.setAttribute('aria-label','Escolher rede do Raio X');
-            picker.innerHTML='<span class="pysa-network-label">Rede</span><button class="pysa-network-btn is-active" data-network="x" title="X" aria-label="Rede X"><span class="pysa-network-icon">𝕏</span></button><button class="pysa-network-btn" data-network="instagram" title="Instagram" aria-label="Instagram"><span class="pysa-network-icon">◎</span>IG</button><button class="pysa-network-btn" data-network="tiktok" title="TikTok" aria-label="TikTok"><span class="pysa-network-icon">♪</span>TT</button>';
+            picker.innerHTML='<span class="pysa-network-line"><span class="pysa-network-label">Rede</span><button class="pysa-network-btn is-active" data-network="x" title="X" aria-label="Rede X"><span class="pysa-network-icon">𝕏</span></button><button class="pysa-network-btn" data-network="instagram" title="Instagram" aria-label="Instagram"><span class="pysa-network-icon">◎</span>IG</button><button class="pysa-network-btn" data-network="tiktok" title="TikTok" aria-label="TikTok"><span class="pysa-network-icon">♪</span>TT</button></span><label class="pysa-raiox-state"><span class="pysa-raiox-state-label">Estado</span><span class="pysa-raiox-state-divider" aria-hidden="true">|</span><select id="pysaRaioXState" aria-label="Selecionar estado no Raio X"><option value="todos">Todos</option><option value="AC">AC</option><option value="AL">AL</option><option value="AP">AP</option><option value="AM">AM</option><option value="BA">BA</option><option value="CE">CE</option><option value="DF">DF</option><option value="ES">ES</option><option value="GO">GO</option><option value="MA">MA</option><option value="MT">MT</option><option value="MS">MS</option><option value="MG">MG</option><option value="PA">PA</option><option value="PB">PB</option><option value="PR">PR</option><option value="PE">PE</option><option value="PI">PI</option><option value="RJ">RJ</option><option value="RN">RN</option><option value="RS">RS</option><option value="RO">RO</option><option value="RR">RR</option><option value="SC">SC</option><option value="SP">SP</option><option value="SE">SE</option><option value="TO">TO</option></select><span class="pysa-raiox-state-arrow" aria-hidden="true">⌄</span></label>';
             picker.addEventListener('click',event=>{const button=event.target.closest('button');if(button)activate(picker,button)});
+            picker.addEventListener('change',event=>{if(event.target.id==='pysaRaioXState')picker.dataset.state=event.target.value});
             const leftColumn=heading.closest('.w-\\[400px\\]')||heading.closest('section');
             const timeTag=[...leftColumn.querySelectorAll('span')].find(span=>span.textContent.trim()==='Últimas 24hs');
             const timeRow=timeTag&&timeTag.parentElement;
